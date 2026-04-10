@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>杀戮尖塔2人格测试</title>
+  <meta
+    name="description"
+    content="24题杀戮尖塔2爬塔人格测试，围绕路线、构筑、启动与联机协作，解锁16种不同玩法人格。"
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="aurora aurora-left"></div>
+    <div class="aurora aurora-right"></div>
+
+    <header class="hero">
+      <p class="eyebrow">Spire Temperament Trial</p>
+      <h1>杀戮尖塔2人格测试</h1>
+      <p class="hero-copy">
+        不管你开的是猎人、战士、故障机器人、储君还是亡灵契约师，
+        这 24 道题都会围绕路线规划、选牌构筑、费用启动、遗物事件与联机分工，
+        判断你更像哪一种真正的爬塔玩家。
+      </p>
+      <div class="hero-tags">
+        <span>24 题</span>
+        <span>4 个爬塔维度</span>
+        <span>16 种玩法人格</span>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <section class="panel intro-panel" id="introPanel">
+        <div class="panel-icon">I</div>
+        <div class="panel-body">
+          <h2>测试说明</h2>
+          <p>
+            这次不测泛泛而谈的性格，而是测你在真正爬塔时会怎么走图、怎么拿牌、
+            怎么看待问号和诅咒、会不会做无限、以及联机时到底是抢遗物还是拿团队卡。
+          </p>
+          <ul class="intro-list">
+            <li>题目为单选，建议连续完成，整体只需 4 到 6 分钟。</li>
+            <li>每道题都会影响四个维度之一，最终组合成你的爬塔人格。</li>
+            <li>结果页会告诉你更偏压层还是探宝、攻哈还是防哈、无限还是曲线、独核还是团辅。</li>
+          </ul>
+          <button class="primary-btn" id="startBtn">开始爬塔</button>
+        </div>
+      </section>
+
+      <section class="panel quiz-panel hidden" id="quizPanel" aria-live="polite">
+        <div class="quiz-top">
+          <div>
+            <p class="eyebrow">Question</p>
+            <h2 id="questionTitle">第 1 题</h2>
+          </div>
+          <div class="progress-chip" id="progressChip">1 / 24</div>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <article class="question-card">
+          <p class="question-text" id="questionText"></p>
+          <div class="choice-list" id="choiceList"></div>
+        </article>
+
+        <div class="quiz-actions">
+          <button class="ghost-btn" id="prevBtn" type="button">上一题</button>
+          <button class="primary-btn" id="nextBtn" type="button">下一题</button>
+        </div>
+      </section>
+
+      <section class="panel result-panel hidden" id="resultPanel">
+        <div class="result-head">
+          <p class="eyebrow">Result</p>
+          <h2 id="resultName">你的尖塔人格</h2>
+          <p class="result-hook" id="resultHook"></p>
+        </div>
+
+        <div class="result-summary">
+          <div class="summary-card accent-card">
+            <span class="summary-label">玩法定位</span>
+            <p id="resultSummary"></p>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">本次判定</span>
+            <p id="resultSignature"></p>
+          </div>
+        </div>
+
+        <section class="dimension-section">
+          <div class="section-title-row">
+            <h3>四维判定</h3>
+            <button class="ghost-btn small-btn" id="copyBtn" type="button">复制结果摘要</button>
+          </div>
+          <div class="dimension-list" id="dimensionList"></div>
+        </section>
+
+        <section class="detail-grid">
+          <div class="detail-card">
+            <h3>你的优势</h3>
+            <ul id="strengthList"></ul>
+          </div>
+          <div class="detail-card">
+            <h3>容易翻车的点</h3>
+            <ul id="pitfallList"></ul>
+          </div>
+          <div class="detail-card wide-card">
+            <h3>爬塔建议</h3>
+            <ul id="adviceList"></ul>
+          </div>
+        </section>
+
+        <div class="result-actions">
+          <button class="ghost-btn" id="restartBtn" type="button">重新测试</button>
+        </div>
+      </section>
+
+      <aside class="panel lore-panel">
+        <div class="panel-icon">II</div>
+        <div class="panel-body">
+          <h2>这次主要在测什么</h2>
+          <div class="lore-list">
+            <article>
+              <h3>压层 / 探宝</h3>
+              <p>你是更爱找战斗、精英和早期遗物，还是更喜欢问号、商店、删牌与事件收益。</p>
+            </article>
+            <article>
+              <h3>攻哈 / 防哈</h3>
+              <p>你更愿意压血线、缩短敌人出手机会，还是优先保血、起防、把战斗拖进自己舒服的节奏。</p>
+            </article>
+            <article>
+              <h3>无限 / 曲线</h3>
+              <p>你会围着加费、减费、过牌与回手去做启动，还是更信任高质量单卡和顺滑费用曲线。</p>
+            </article>
+            <article>
+              <h3>独核 / 团辅</h3>
+              <p>联机时你更想先把自己做成主核，还是愿意拿团队卡、让遗物，把收益分给全队。</p>
+            </article>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer-note">
+      Fan-made personality test inspired by the mood of Slay the Spire.
+    </footer>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
