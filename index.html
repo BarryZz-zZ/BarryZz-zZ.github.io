@@ -6,7 +6,7 @@
   <title>杀戮尖塔2人格测试</title>
   <meta
     name="description"
-    content="24题杀戮尖塔2爬塔人格测试，围绕路线、构筑、启动与联机协作，解锁16种不同玩法人格。"
+    content="20题杀戮尖塔2整活人格测试，围绕路线、构筑、无限、蛇咬梗、异蛇之油与联机抢遗物，解锁16种离谱玩法人格。"
   >
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -19,14 +19,14 @@
       <p class="eyebrow">Spire Temperament Trial</p>
       <h1>杀戮尖塔2人格测试</h1>
       <p class="hero-copy">
-        不管你开的是猎人、战士、故障机器人、储君还是亡灵契约师，
-        这 24 道题都会围绕路线规划、选牌构筑、费用启动、遗物事件与联机分工，
-        判断你更像哪一种真正的爬塔玩家。
+        这次不装正经策士了。
+        20 道题会认真测你到底是压层狂、无限信徒、联机主核怪，
+        还是会在商店买异蛇之油专门防队友演无限的乐子人。
       </p>
       <div class="hero-tags">
-        <span>24 题</span>
-        <span>4 个爬塔维度</span>
-        <span>16 种玩法人格</span>
+        <span>20 题怪题</span>
+        <span>4 个离谱维度</span>
+        <span>16 种爬塔怪人</span>
       </div>
     </header>
 
@@ -36,15 +36,16 @@
         <div class="panel-body">
           <h2>测试说明</h2>
           <p>
-            这次不测泛泛而谈的性格，而是测你在真正爬塔时会怎么走图、怎么拿牌、
-            怎么看待问号和诅咒、会不会做无限、以及联机时到底是抢遗物还是拿团队卡。
+            这里没有“你善于沟通、你热爱冒险”这种空话。
+            这里只有蛇咬到底强不强、问号里塞诅咒你点不点、团队卡你拿不拿、
+            以及你会不会为了防队友无限而斥巨资购买异蛇之油。
           </p>
           <ul class="intro-list">
             <li>题目为单选，建议连续完成，整体只需 4 到 6 分钟。</li>
-            <li>每道题都会影响四个维度之一，最终组合成你的爬塔人格。</li>
-            <li>结果页会告诉你更偏压层还是探宝、攻哈还是防哈、无限还是曲线、独核还是团辅。</li>
+            <li>每道题都是具体操作选择，不再用“非常像我/比较像我”这种没灵魂量表。</li>
+            <li>结果页会告诉你到底是正常爬塔人，还是那种朋友看见你进房间就开始护遗物的人。</li>
           </ul>
-          <button class="primary-btn" id="startBtn">开始爬塔</button>
+          <button class="primary-btn" id="startBtn">开始发病</button>
         </div>
       </section>
 
@@ -54,7 +55,7 @@
             <p class="eyebrow">Question</p>
             <h2 id="questionTitle">第 1 题</h2>
           </div>
-          <div class="progress-chip" id="progressChip">1 / 24</div>
+          <div class="progress-chip" id="progressChip">1 / 20</div>
         </div>
 
         <div class="progress-track" aria-hidden="true">
@@ -75,7 +76,7 @@
       <section class="panel result-panel hidden" id="resultPanel">
         <div class="result-head">
           <p class="eyebrow">Result</p>
-          <h2 id="resultName">你的尖塔人格</h2>
+          <h2 id="resultName">你的尖塔怪人类型</h2>
           <p class="result-hook" id="resultHook"></p>
         </div>
 
@@ -85,14 +86,14 @@
             <p id="resultSummary"></p>
           </div>
           <div class="summary-card">
-            <span class="summary-label">本次判定</span>
+            <span class="summary-label">病情标签</span>
             <p id="resultSignature"></p>
           </div>
         </div>
 
         <section class="dimension-section">
           <div class="section-title-row">
-            <h3>四维判定</h3>
+            <h3>发病方向</h3>
             <button class="ghost-btn small-btn" id="copyBtn" type="button">复制结果摘要</button>
           </div>
           <div class="dimension-list" id="dimensionList"></div>
@@ -100,44 +101,44 @@
 
         <section class="detail-grid">
           <div class="detail-card">
-            <h3>你的优势</h3>
+            <h3>这人最会干嘛</h3>
             <ul id="strengthList"></ul>
           </div>
           <div class="detail-card">
-            <h3>容易翻车的点</h3>
+            <h3>通常怎么翻车</h3>
             <ul id="pitfallList"></ul>
           </div>
           <div class="detail-card wide-card">
-            <h3>爬塔建议</h3>
+            <h3>给你的处方</h3>
             <ul id="adviceList"></ul>
           </div>
         </section>
 
         <div class="result-actions">
-          <button class="ghost-btn" id="restartBtn" type="button">重新测试</button>
+          <button class="ghost-btn" id="restartBtn" type="button">重测一把</button>
         </div>
       </section>
 
       <aside class="panel lore-panel">
         <div class="panel-icon">II</div>
         <div class="panel-body">
-          <h2>这次主要在测什么</h2>
+          <h2>这次到底在测什么鬼</h2>
           <div class="lore-list">
             <article>
               <h3>压层 / 探宝</h3>
-              <p>你是更爱找战斗、精英和早期遗物，还是更喜欢问号、商店、删牌与事件收益。</p>
+              <p>你是看见精英就想上，还是看见问号、商店和删牌就开始眼睛发亮。</p>
             </article>
             <article>
               <h3>攻哈 / 防哈</h3>
-              <p>你更愿意压血线、缩短敌人出手机会，还是优先保血、起防、把战斗拖进自己舒服的节奏。</p>
+              <p>你是“怪不死我就难受”，还是“先把血线保住，别在第一层当场蒸发”。</p>
             </article>
             <article>
               <h3>无限 / 曲线</h3>
-              <p>你会围着加费、减费、过牌与回手去做启动，还是更信任高质量单卡和顺滑费用曲线。</p>
+              <p>你是看到减费过牌就闻到无限味，还是更相信一张牌抽到就能干活的正常人思路。</p>
             </article>
             <article>
               <h3>独核 / 团辅</h3>
-              <p>联机时你更想先把自己做成主核，还是愿意拿团队卡、让遗物，把收益分给全队。</p>
+              <p>联机时你更像“资源先给我我来 carry”，还是“行吧这张团队卡我来背锅”。</p>
             </article>
           </div>
         </div>

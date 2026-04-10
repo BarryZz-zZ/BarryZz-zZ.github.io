@@ -4,9 +4,9 @@ const dimensions = {
     left: "探宝",
     right: "压层",
     summary: {
-      negative: "你会更多把路线给问号、商店、宝箱和删牌机会，愿意靠事件收益与路线运营慢慢把一把牌修漂亮。",
-      positive: "你会主动找战斗和精英，用卡牌奖励、早期遗物和篝火强化把整层节奏直接压快。",
-      neutral: "你不是纯压层或纯探宝，而是会按血量、金币、遗物和关底需求灵活决定这层该怎么走。"
+      negative: "你看见问号、商店、宝箱和删牌机会就会心动，觉得地图不是拿来打穿的，是拿来经营的。",
+      positive: "你更像会主动找战斗和精英的人，遗物、卡牌奖励和篝火强化在你眼里才是硬通货。",
+      neutral: "你不是固定走一种图，而是会按血量、金币、遗物和队友状态临场调路线。"
     }
   },
   combat: {
@@ -14,9 +14,9 @@ const dimensions = {
     left: "防哈",
     right: "攻哈",
     summary: {
-      negative: "你更重视健康血线、稳定格挡和续航能力，宁愿多打一两回合，也不想把战斗打得太悬。",
-      positive: "你会优先想怎么缩短敌人出手机会，愿意用掉一点血来换更快的斩杀线和更低的总战损。",
-      neutral: "你不是单纯的莽或苟，而是会按敌人意图、当前血量和构筑形态切换攻防比例。"
+      negative: "你更在乎血线健康和回合稳定，能少掉一点血，就愿意多打一轮。",
+      positive: "你会优先想怎么让怪物少出一次手，哪怕付出一点血量也愿意换更快结束战斗。",
+      neutral: "你既不是纯莽夫，也不是纯乌龟，更多是看手牌和怪意图决定今天要不要凶一点。"
     }
   },
   engine: {
@@ -24,9 +24,9 @@ const dimensions = {
     left: "曲线",
     right: "无限",
     summary: {
-      negative: "你更相信高质量单卡、顺滑费用曲线和抽到就能打的稳定性，不喜欢为了梦想连锁牺牲普通回合。",
-      positive: "你会主动给减费、加费、过牌、回手和循环部件留位置，只要看见连锁或无限窗口就会认真经营。",
-      neutral: "你既看重普通回合的保底，也会在真有条件时尝试做启动，不会轻易被某一种玩法绑死。"
+      negative: "你更信任抽到就能打的高质量单卡和顺滑费用曲线，不喜欢为了梦想连锁把普通回合过成 PPT。",
+      positive: "你会主动盯减费、过牌、回手、加费和洗牌循环，只要闻到一点无限味就会开始做梦。",
+      neutral: "你不会对无限盲目信教，也不会完全拒绝，更多是看这把到底配不配你动数学。"
     }
   },
   coop: {
@@ -34,287 +34,660 @@ const dimensions = {
     left: "独核",
     right: "团辅",
     summary: {
-      negative: "联机时你会优先确保自己的牌库和遗物收益成型，认为先做出一个稳定主核，才有资格谈怎么带队友。",
-      positive: "你愿意拿团队卡、让关键遗物、分节奏资源，目标不是自己单飞，而是让整队更快进入舒服区间。",
-      neutral: "你不是绝对自私或绝对奉献，而是会看当前谁最缺启动、谁最吃资源，再决定要不要让利。"
+      negative: "联机里你更倾向先把自己做成主核，觉得只有自己先稳定成型，后面才谈得上救别人。",
+      positive: "你愿意拿团队卡、让关键遗物、喂队友资源，看到全队一起起飞会比自己独胡还爽。",
+      neutral: "你不会无脑自私，也不会无脑奉献，通常会先看谁最缺资源、谁最值得让。"
     }
   }
 };
 
 const questions = [
   {
-    text: "第一层如果能多打一只精英换早期遗物，我通常愿意少一个安稳节点去换它。",
-    dimension: "pathing",
-    direction: 1
+    text: "第一层开图，你同时看到了“双精英接篝火”和“问号商店宝箱连连看”两条路线，你第一反应是？",
+    options: [
+      {
+        label: "双精英那条",
+        hint: "活着出来我就是神。",
+        effects: { pathing: 2, combat: 1 }
+      },
+      {
+        label: "问号商店线",
+        hint: "先把牌库修顺再谈别的。",
+        effects: { pathing: -2, engine: 1 }
+      },
+      {
+        label: "看职业再决定",
+        hint: "机器人和契约师敢一点，别的先做人。",
+        effects: {}
+      },
+      {
+        label: "看队友状态",
+        hint: "联机先选一条少救两次人的路。",
+        effects: { coop: 1, combat: -1 }
+      }
+    ]
   },
   {
-    text: "看到连续问号接商店的路线，我常会觉得这把更有操作空间。",
-    dimension: "pathing",
-    direction: -1
+    text: "问号事件弹出一个“超赚效果，但附带诅咒”的选项，你会怎么按？",
+    options: [
+      {
+        label: "直接拿",
+        hint: "未来的我会想办法删掉它。",
+        effects: { pathing: -2, engine: 1 }
+      },
+      {
+        label: "先看删牌窗口",
+        hint: "有商店就签字，没商店就算了。",
+        effects: { pathing: -1, engine: 1 }
+      },
+      {
+        label: "不拿",
+        hint: "牌库已经不是垃圾桶了。",
+        effects: { engine: -1, combat: -1 }
+      },
+      {
+        label: "怂恿队友点",
+        hint: "出事就说我只是建议。",
+        effects: { coop: -2, pathing: -1 }
+      }
+    ]
   },
   {
-    text: "只要当前血量还健康，我更想多打战斗拿卡牌奖励，而不是一路绕开怪。",
-    dimension: "pathing",
-    direction: 1
+    text: "商店里刷出了“异蛇之油”，效果是抽几张牌并让牌随机变成 0 到 3 费。你会？",
+    options: [
+      {
+        label: "立刻买",
+        hint: "随机费用也是一种艺术。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "坚决不买",
+        hint: "我的回合已经够乱了。",
+        effects: { engine: -2 }
+      },
+      {
+        label: "买给做无限的队友",
+        hint: "世界终于能安静一点了。",
+        effects: { coop: -2, engine: -1 }
+      },
+      {
+        label: "边骂边下单",
+        hint: "我知道这东西离谱，但抽牌真的香。",
+        effects: { engine: 1, pathing: -1 }
+      }
+    ]
   },
   {
-    text: "即使事件可能塞诅咒，只要收益够高，我还是很爱走问号线。",
-    dimension: "pathing",
-    direction: -1
+    text: "联机宝箱开出一堆大家都想要的遗物，你最像哪种人？",
+    options: [
+      {
+        label: "石头剪刀布",
+        hint: "赢的人就是天命。",
+        effects: { coop: -2 }
+      },
+      {
+        label: "看谁最适合",
+        hint: "少演宫斗戏，直接分。",
+        effects: { coop: 2 }
+      },
+      {
+        label: "先报 build",
+        hint: "能讲道理就不出拳。",
+        effects: { coop: 1, engine: 1 }
+      },
+      {
+        label: "先截图发群",
+        hint: "证明友谊在遗物面前不值一提。",
+        effects: { coop: -1 }
+      }
+    ]
   },
   {
-    text: "我规划路线时，会优先看能不能把精英、宝箱和篝火强化串成一条压层线。",
-    dimension: "pathing",
-    direction: 1
+    text: "第二层前半段血量一般，前面一边是精英接篝火，一边是问号接商店。你会？",
+    options: [
+      {
+        label: "还是打精英",
+        hint: "遗物比睡觉香。",
+        effects: { pathing: 2, combat: 1 }
+      },
+      {
+        label: "先休息保血",
+        hint: "别被第三层 boss 看笑话。",
+        effects: { combat: -2 }
+      },
+      {
+        label: "走问号商店",
+        hint: "顺便看看能不能删诅咒修牌。",
+        effects: { pathing: -2, engine: 1 }
+      },
+      {
+        label: "看队友能不能带",
+        hint: "别人已经胡了，我负责别送。",
+        effects: { coop: 1, combat: -1 }
+      }
+    ]
   },
   {
-    text: "如果一条路线能稳定经过商店、休息点和问号，我通常会更愿意把它当保底路线。",
-    dimension: "pathing",
-    direction: -1
+    text: "第一只精英开场，你的默认思路更像哪一种？",
+    options: [
+      {
+        label: "先狠狠干血线",
+        hint: "少一轮怪意图就少一轮风险。",
+        effects: { combat: 2 }
+      },
+      {
+        label: "先起盾",
+        hint: "别为了帅在第一层见祖宗。",
+        effects: { combat: -2 }
+      },
+      {
+        label: "看手牌和怪意图",
+        hint: "能斩就斩，不能就蹲。",
+        effects: {}
+      },
+      {
+        label: "我先扛一下",
+        hint: "如果队友能补刀，我愿意演前排。",
+        effects: { coop: 1, combat: -1 }
+      }
+    ]
   },
   {
-    text: "选牌时我很看重“这张能不能把敌人的下一轮意图直接掐掉”。",
-    dimension: "combat",
-    direction: 1
+    text: "卡牌奖励里放着一张大攻击、一张稳防牌和一张过牌/能量组件，你会怎么拿？",
+    options: [
+      {
+        label: "拿大攻击",
+        hint: "boss 血不会自己掉。",
+        effects: { combat: 2 }
+      },
+      {
+        label: "拿稳防牌",
+        hint: "活着比数字大重要。",
+        effects: { combat: -2 }
+      },
+      {
+        label: "拿过牌或能量件",
+        hint: "前面两张以后都得给它打工。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "直接跳过",
+        hint: "牌库不是垃圾填埋场。",
+        effects: { engine: -1, pathing: -1 }
+      }
+    ]
   },
   {
-    text: "比起提前斩杀，我更想先把格挡、减伤或续航工具补齐。",
-    dimension: "combat",
-    direction: -1
+    text: "你对药水最常见的态度是？",
+    options: [
+      {
+        label: "现在就喝",
+        hint: "药水放着只会跟我一起通关。",
+        effects: { combat: 2 }
+      },
+      {
+        label: "先囤着",
+        hint: "再难受也许 boss 更需要它。",
+        effects: { combat: -2 }
+      },
+      {
+        label: "给更需要的人",
+        hint: "队友比我更可能靠这瓶起飞。",
+        effects: { coop: 2 }
+      },
+      {
+        label: "先算收益",
+        hint: "能不能少打一轮，才是重点。",
+        effects: { combat: 1, engine: 1 }
+      }
+    ]
   },
   {
-    text: "面对小怪或精英时，我通常接受一点掉血来换更快结束战斗。",
-    dimension: "combat",
-    direction: 1
+    text: "血量一般，但前面有一只精英。你的脑子里先冒出来的是？",
+    options: [
+      {
+        label: "打",
+        hint: "赢了就是遗物和故事。",
+        effects: { pathing: 2, combat: 1 }
+      },
+      {
+        label: "绕",
+        hint: "今天的 KPI 是活到 boss 面前。",
+        effects: { pathing: -1, combat: -1 }
+      },
+      {
+        label: "看离启动差多远",
+        hint: "只差一张牌我就赌。",
+        effects: { engine: 1, pathing: 1 }
+      },
+      {
+        label: "让队友先上",
+        hint: "我负责在语音里说“稳一点”。",
+        effects: { coop: 1, combat: -1 }
+      }
+    ]
   },
   {
-    text: "只要血量能稳住，我不介意一场战斗多拖几回合慢慢滚雪球。",
-    dimension: "combat",
-    direction: -1
+    text: "你怎么看“蛇咬”这张牌？",
+    options: [
+      {
+        label: "不强，但我要硬吹",
+        hint: "乐子大于强度。",
+        effects: { coop: 1 }
+      },
+      {
+        label: "不强，除非已经胡了",
+        hint: "得配件离谱到不像话。",
+        effects: { engine: -1 }
+      },
+      {
+        label: "我要唱反调",
+        hint: "强不强不重要，先抬杠。",
+        effects: { coop: -1 }
+      },
+      {
+        label: "能咬死就叫神卡",
+        hint: "这回合有用就够了。",
+        effects: { combat: 1 }
+      }
+    ]
   },
   {
-    text: "我会优先拿能压血线、清杂兵、缩短 boss 阶段数的牌。",
-    dimension: "combat",
-    direction: 1
+    text: "看到减费、回手、过牌、加费这些组件时，你通常会怎么想？",
+    options: [
+      {
+        label: "闻到无限味了",
+        hint: "先拿再说，数学之后再补。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "先别做梦",
+        hint: "当前回合强度才是硬道理。",
+        effects: { engine: -2 }
+      },
+      {
+        label: "先看删牌数",
+        hint: "不瘦身，再多组件也是 PPT。",
+        effects: { engine: 1 }
+      },
+      {
+        label: "让队友先拿",
+        hint: "他比我更快成型。",
+        effects: { coop: 2, engine: 1 }
+      }
+    ]
   },
   {
-    text: "对我来说，健康血量和稳定起防往往比华丽斩杀更重要。",
-    dimension: "combat",
-    direction: -1
+    text: "你对“每回合 3 费该怎么花”这件事，更接近哪句话？",
+    options: [
+      {
+        label: "花满 3 费最安心",
+        hint: "顺滑曲线就是幸福。",
+        effects: { engine: -2 }
+      },
+      {
+        label: "这回合空点也没事",
+        hint: "下回合能开转就值。",
+        effects: { engine: 1 }
+      },
+      {
+        label: "为了循环可以忍",
+        hint: "只要后面能连起来，现在少打一张也行。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "一卡顶一回合最好",
+        hint: "少算一步少掉头发。",
+        effects: { engine: -1, combat: 1 }
+      }
+    ]
   },
   {
-    text: "看到减费、加费、过牌、回手这些部件时，我会主动围着它们拼启动。",
-    dimension: "engine",
-    direction: 1
+    text: "你对“回合结束后打出的牌和没打出的手牌都会先去弃牌堆，再靠洗牌重新回来”这件事的态度更像？",
+    options: [
+      {
+        label: "我很爱算这个",
+        hint: "能洗回来就还有明天。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "知道归知道",
+        hint: "但我还是更想抽到就狠狠干活。",
+        effects: { engine: -1, combat: 1 }
+      },
+      {
+        label: "队友一提洗牌我就警觉",
+        hint: "八成又要开始做无限了。",
+        effects: { coop: 1, engine: 1 }
+      },
+      {
+        label: "太累了不想算",
+        hint: "多拿两张朴素神卡更实际。",
+        effects: { engine: -2 }
+      }
+    ]
   },
   {
-    text: "我更喜欢每回合顺着 3 点费用自然出牌，而不是等几张关键牌同回合凑齐。",
-    dimension: "engine",
-    direction: -1
+    text: "商店里你的钱只够在“删打击”“买稀有大牌”“买奇怪遗物”里三选一，你会？",
+    options: [
+      {
+        label: "删打击",
+        hint: "牌库薄，天地宽。",
+        effects: { engine: 1, pathing: -1 }
+      },
+      {
+        label: "买稀有大牌",
+        hint: "抽到它那回合就是高潮。",
+        effects: { engine: -1, combat: 1 }
+      },
+      {
+        label: "买奇怪遗物",
+        hint: "副作用以后再说。",
+        effects: { pathing: -1, engine: 1 }
+      },
+      {
+        label: "先算循环收益",
+        hint: "能和弃牌堆、回手、减费闹事我就买。",
+        effects: { engine: 2 }
+      }
+    ]
   },
   {
-    text: "只要看见有机会做出无限或超长连打，我愿意为那条线提前埋卡位。",
-    dimension: "engine",
-    direction: 1
+    text: "你对无限的底线，大概是下面哪一种？",
+    options: [
+      {
+        label: "看到苗头就做",
+        hint: "做不出来也要先幻想五分钟。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "不影响普通回合才做",
+        hint: "做人要留保底。",
+        effects: {}
+      },
+      {
+        label: "能正常过关何必数学",
+        hint: "一刀一盾已经很幸福了。",
+        effects: { engine: -2 }
+      },
+      {
+        label: "队友做我负责报数",
+        hint: "“还没打完吗”是我的团队贡献。",
+        effects: { coop: -1, engine: 1 }
+      }
+    ]
   },
   {
-    text: "我不太喜欢卡组为了连锁而塞太多单体组件，宁愿保证单卡抽到就能用。",
-    dimension: "engine",
-    direction: -1
+    text: "联机里刷出一张团队卡，你更像哪类人？",
+    options: [
+      {
+        label: "我拿",
+        hint: "牌位这种东西本来就是拿来燃烧的。",
+        effects: { coop: 2 }
+      },
+      {
+        label: "谁最不吃牌位谁拿",
+        hint: "最好别是我。",
+        effects: { coop: -2 }
+      },
+      {
+        label: "我胡了就拿",
+        hint: "这时候装大方最不痛。",
+        effects: { coop: 1 }
+      },
+      {
+        label: "先看强不强",
+        hint: "垃圾团队卡别拿道德绑架我。",
+        effects: {}
+      }
+    ]
   },
   {
-    text: "商店里如果出现关键启动件或删牌窗口，我会愿意改路线甚至存钱等它。",
-    dimension: "engine",
-    direction: 1
+    text: "队友眼看就要做出无限了，你会？",
+    options: [
+      {
+        label: "狠狠干喂资源",
+        hint: "让他打一小时我也认了。",
+        effects: { coop: 2, engine: 1 }
+      },
+      {
+        label: "买异蛇之油干扰",
+        hint: "一回合打半小时也得有报应。",
+        effects: { coop: -2, engine: 1 }
+      },
+      {
+        label: "嘴上支持，心里抢遗物",
+        hint: "我承认我很坏。",
+        effects: { coop: -1 }
+      },
+      {
+        label: "先把自己做强",
+        hint: "免得他断了大家一起坐牢。",
+        effects: { coop: -2, combat: 1 }
+      }
+    ]
   },
   {
-    text: "比起爆一回合，我更偏爱每轮都能稳定交出像样的输出和防御。",
-    dimension: "engine",
-    direction: -1
+    text: "联机时队友残血，而你手上有能保命的资源。你更像？",
+    options: [
+      {
+        label: "先救他",
+        hint: "别还没到 boss 就少个人。",
+        effects: { coop: 2, combat: -1 }
+      },
+      {
+        label: "先保自己",
+        hint: "我倒了你们更难打。",
+        effects: { coop: -2 }
+      },
+      {
+        label: "先看是谁",
+        hint: "如果他刚抢过我遗物，那得另说。",
+        effects: { coop: -1 }
+      },
+      {
+        label: "主 C 就救",
+        hint: "我很现实，但也很专业。",
+        effects: { coop: 1 }
+      }
+    ]
   },
   {
-    text: "联机时如果团队卡很关键，我可以接受牺牲自己的牌位去拿。",
-    dimension: "coop",
-    direction: 1
+    text: "遗物分配时，你最像哪种人？",
+    options: [
+      {
+        label: "谁拿提升最大谁拿",
+        hint: "效率优先，别演。",
+        effects: { coop: 2 }
+      },
+      {
+        label: "谁赢猜拳谁拿",
+        hint: "把公平交给命运。",
+        effects: { coop: -2 }
+      },
+      {
+        label: "先给当前层最需要的人",
+        hint: "能过眼前这关比什么都重要。",
+        effects: { coop: 1, combat: 1 }
+      },
+      {
+        label: "你们先选",
+        hint: "但我会死盯着自己最想要那件。",
+        effects: { coop: -1 }
+      }
+    ]
   },
   {
-    text: "宝箱开出我也很想要的遗物时，我会先想谁拿了对全队提升最大。",
-    dimension: "coop",
-    direction: 1
-  },
-  {
-    text: "只要队友这把的核心还没成型，我愿意先拿能补团队短板的牌、药水或遗物。",
-    dimension: "coop",
-    direction: 1
-  },
-  {
-    text: "联机里我更想先把自己做成稳稳能 carry 的主核，团队加成之后再说。",
-    dimension: "coop",
-    direction: -1
-  },
-  {
-    text: "我不介意把过牌、能量或其他节奏资源让给更适合启动的队友。",
-    dimension: "coop",
-    direction: 1
-  },
-  {
-    text: "如果我这套还没成型，我通常会优先抢对自己直接增益最大的奖励。",
-    dimension: "coop",
-    direction: -1
+    text: "第三层 boss 前，队友说“这把稳了”。你第一反应通常是？",
+    options: [
+      {
+        label: "稳个屁，再打一只精英",
+        hint: "能贪一点是一点。",
+        effects: { pathing: 2, combat: 1 }
+      },
+      {
+        label: "先去商店",
+        hint: "把牌修漂亮了再稳。",
+        effects: { pathing: -1, engine: 1 }
+      },
+      {
+        label: "那我继续做梦",
+        hint: "也许还能再转一层无限。",
+        effects: { engine: 2 }
+      },
+      {
+        label: "那我拿团队卡",
+        hint: "稳了就有资格当工具人。",
+        effects: { coop: 2 }
+      }
+    ]
   }
-];
-
-const options = [
-  { label: "非常像我", value: 2, hint: "这基本就是我的默认打法。" },
-  { label: "比较像我", value: 1, hint: "大多数局里我会这么做。" },
-  { label: "不太像我", value: -1, hint: "偶尔会，但不是主风格。" },
-  { label: "完全不像我", value: -2, hint: "我通常不会这么爬塔。" }
 ];
 
 const archetypes = {
   "1111": {
-    name: "团队连锁先锋",
-    hook: "你会主动找精英、抢节奏做启动，联机里还愿意拿团队卡，把整队一起拉进爆发回合。",
-    summary: "你的快乐点是把路线、出牌顺序和资源供给全部接成一条线：前期靠压层拿遗物，中期靠过牌减费做引擎，联机里还能顺手托起队友。",
+    name: "全队都给我转起来",
+    hook: "你是一边压精英一边做无限，顺手还想把队友一起喂进爆发回合的人。",
+    summary: "你不是只想赢，你是想把整局打成集锦。自己要转，全队最好也跟着转。",
     signature: "压层 + 攻哈 + 无限 + 团辅",
-    strengths: ["识别高上限路线很快", "会把费用、抽牌和输出窗口连起来", "愿意为全队的爆发做牺牲"],
-    pitfalls: ["过早贪精英或贪启动件会让血线崩得快", "容易把全队都按你的节奏要求", "关键部件迟到时，前几回合会明显发虚"],
-    advice: ["第一层别同时贪太多，精英、删牌、梦想件至少放一个", "联机时先确认谁是主核，再决定团队卡给谁拿", "做无限前先保证打不过时也有普通回合可过"]
+    strengths: ["上限嗅觉特别灵", "自己能演，还能喂别人一起演", "一旦顺起来节目效果和通关率一起涨"],
+    pitfalls: ["精英、启动、团队卡会被你一次贪三样", "会把队友默认成能跟上你节奏的人", "关键件不来时嘴硬值会迅速升高"],
+    advice: ["每层最多同时贪两件事", "先确认谁是真主核再喂资源", "给自己留一套做不出无限时也能过回合的牌"]
   },
   "1110": {
-    name: "独狼无限猎手",
-    hook: "你最爱的是把自己做成一台单回合停不下来的机器，然后让精英和 boss 直接跳过表演时间。",
-    summary: "你倾向靠战斗奖励和关键引擎件快速成型，目标不是稳过，而是尽早把自己堆成能独自接管整局的核心。",
+    name: "单人回合制取消者",
+    hook: "你最大的理想不是过塔，是让怪物完全失去参与感。",
+    summary: "你压层、攻哈、做无限，而且资源优先喂自己。只要能打出那种离谱一回合，你就觉得前面受的苦都值。",
     signature: "压层 + 攻哈 + 无限 + 独核",
-    strengths: ["独立成型欲望强，拿牌方向很明确", "敢为高上限路线承担掉血和空过风险", "一旦成型，清层速度极快"],
-    pitfalls: ["会低估普通回合的保底质量", "联机时容易忽略队友节奏", "过度围绕单一 combo 时会很怕诅咒和卡手"],
-    advice: ["每次贪启动件都问一句，这张不来时我怎么过精英第一轮", "别把所有金币都留给梦想件，删牌同样重要", "联机里至少保留一个能共享的资源节点，别完全单打独斗"]
+    strengths: ["主核欲望极强", "敢把资源压在高上限线路上", "成型后经常把 boss 打成观众"],
+    pitfalls: ["普通回合保底可能烂得惊人", "联机时很容易忘记别人也在这局里", "特别怕诅咒、卡手和异蛇之油"],
+    advice: ["梦想件之外先保证能活过前两轮", "删牌和过牌别总给大梦让路", "偶尔也分一点资源，不然朋友会先打你"]
   },
   "1101": {
-    name: "前排军需官",
-    hook: "你喜欢用稳定前压把整队往上推，路线敢打，出牌不飘，联机时很像会发军备的人。",
-    summary: "你更信任结实的费用曲线和稳定斩杀线，不太迷信无限，但非常擅长靠战斗奖励、遗物和团队分工把一层层压过去。",
+    name: "军火批发商",
+    hook: "你喜欢一路找怪拿战力，顺手把全队装备也补齐。",
+    summary: "你更信任快节奏压层和高质量曲线，不太依赖花里胡哨的连锁，但很会把战斗奖励和联机分工用到极致。",
     signature: "压层 + 攻哈 + 曲线 + 团辅",
-    strengths: ["路线稳准，敢拿精英但不乱贪", "很会补强杂兵战和精英战的关键缺口", "联机里能看见谁最需要什么"],
-    pitfalls: ["可能低估单回合爆发的上限", "会为了整体节奏牺牲交太多自己的成长", "对犹豫型队友的耐心有限"],
-    advice: ["保留你的稳，但别错过明显能抬高天花板的稀有牌", "团队卡拿得多时记得补自己的输出窗口", "boss 前检查自己有没有明确的终结手段"]
+    strengths: ["前中期战力来得快", "看得懂谁最缺什么资源", "联机里很像会发军备的人"],
+    pitfalls: ["有时会低估爆发组件的天花板", "容易为了整体节奏牺牲自己成长", "看到队友犹豫会想替他出牌"],
+    advice: ["稳归稳，也别错过明显抬上限的稀有牌", "分资源时记得给自己留终结手段", "别把全队的问题都接到自己身上"]
   },
   "1100": {
-    name: "精英速斩者",
-    hook: "你走的是最经典也最硬的一条线：找怪、拿卡、压血线、快点杀。",
-    summary: "你偏爱靠高质量单卡和费用曲线狠狠干净每一层，不太依赖花哨组合，核心目标是减少敌人出手机会。",
+    name: "见怪就砍派",
+    hook: "你玩的不是花活，是看见怪就想上去狠狠干两下。",
+    summary: "你爱压层、爱攻哈、爱简单粗暴的高质量单卡。能少一轮怪意图，就懒得多算一轮数学。",
     signature: "压层 + 攻哈 + 曲线 + 独核",
-    strengths: ["前中期战力来得快", "不需要太多组件就能稳定过图", "路线和拿牌决策非常直接"],
-    pitfalls: ["后期如果没补成长，可能在长 boss 战掉速", "容易轻视问号和商店里的结构价值", "联机里会默认自己先吃资源"],
-    advice: ["攻哈不等于只拿攻击，至少保留几张能过 boss 机制的工具牌", "如果第一层太顺，第二层要提前补成长件", "别把每一件遗物都当成自己必须拿"]
+    strengths: ["战力落地快", "不需要太多组件就能过图", "路线和拿牌都非常直接"],
+    pitfalls: ["后期如果不补成长会突然掉速", "容易看不上问号和商店的细活", "联机里常默认自己先吃资源"],
+    advice: ["攻哈不等于全塞攻击，工具牌还是要有", "第二层开始记得补一点 boss 战成长", "偶尔让一件遗物并不会削弱你的锋芒"]
   },
   "1011": {
-    name: "盾墙供能官",
-    hook: "你会先把战斗活下来，再把费用和过牌越滚越顺，最后带着全队一起进入安全爆发。",
-    summary: "你敢打精英，但不是靠裸冲，而是靠稳血、起防、拖到引擎转起来；联机中你常是那个愿意让队友先吃收益的人。",
+    name: "先起盾再开演",
+    hook: "你会先把战斗活下来，再把费用和抽牌滚成一台大家都能搭车的机器。",
+    summary: "你不靠裸冲上限，而是靠稳血、起防和引擎慢慢转起来。等你真开演时，通常全队都已经坐稳了。",
     signature: "压层 + 防哈 + 无限 + 团辅",
-    strengths: ["对长战和 boss 战适应度高", "能把引擎与保命工具一起拼起来", "团队里容错率很高"],
-    pitfalls: ["前期压层时可能因为节奏不够快而多吃伤害", "太想保血时会漏掉斩杀窗口", "把资源让出去后自己可能成型偏慢"],
-    advice: ["第一层打精英前，先确认有没有能撑过前两回合的底盘", "防哈流也要准备收尾手段，别只会活不会赢", "联机里让利前先算清自己的关键节点"]
+    strengths: ["长战和 boss 战适应度很高", "能把保命和引擎一起拼出来", "队友跟着你打通常会很安心"],
+    pitfalls: ["前期压层时可能因为节奏偏慢多吃伤害", "太想稳会漏斩杀窗口", "资源让出去后自己可能成型偏晚"],
+    advice: ["打精英前先确认自己前两轮不会裸死", "防哈流也得有收尾手段", "让利之前先算清自己缺的关键件"]
   },
   "1010": {
-    name: "壁垒永动机",
-    hook: "你喜欢把牌库转成一台不容易死，而且一旦转起来就很难停下来的机器。",
-    summary: "你偏爱稳定起防、减伤和资源循环，愿意为了未来的超长回合忍受前期的慢热，是典型的单核引擎玩家。",
+    name: "苟着苟着就无限了",
+    hook: "你是那种看起来在乌龟，结果突然就开始一回合打不停的人。",
+    summary: "你偏爱稳定起防和资源循环，愿意为了后面的超长回合忍受前期慢热，是典型的单核慢启动病人。",
     signature: "压层 + 防哈 + 无限 + 独核",
-    strengths: ["长战上限很高", "容错足，容易把劣势拖成可操作局", "对费用和过牌的理解会越来越深"],
-    pitfalls: ["前期太慢时容易被高压精英狠狠干血", "会沉迷做最完美的机器，导致战力落地偏晚", "关键组件被诅咒或状态牌卡住时会很难受"],
-    advice: ["引擎件之外，至少准备两张能马上挡伤害的实用牌", "当路线已经很危险时，先拿保命再拿梦想件", "别为了理论无限放弃一套已经能赢的中速构筑"]
+    strengths: ["长战上限很高", "容错足，劣势也能慢慢拖回来", "对弃牌堆和洗牌循环非常敏感"],
+    pitfalls: ["前几层很容易被高压精英狠狠干血", "会沉迷做完美机器", "关键组件被诅咒卡住时会异常痛苦"],
+    advice: ["引擎件之外先补几张立刻能救命的牌", "路线危险时先保命再做梦", "别为了理论无限放弃已经能赢的构筑"]
   },
   "1001": {
-    name: "稳层保驾者",
-    hook: "你是联机里最让人安心的那种人，敢打精英，但不会拿全队血线开玩笑。",
-    summary: "你重视稳定曲线、健康血量和团队整体过层率，喜欢用扎实的卡牌与遗物把每一层的风险压到最低。",
+    name: "队伍保安队长",
+    hook: "你是联机里最像“别慌我来兜底”的那个人。",
+    summary: "你敢打精英，但不会拿全队血线开玩笑。你信任稳防、顺滑曲线和靠谱分配，是非常像正经队长的玩法。",
     signature: "压层 + 防哈 + 曲线 + 团辅",
-    strengths: ["稳健，极少莫名暴毙", "善于补团队短板", "boss 前的准备通常很充分"],
-    pitfalls: ["容易错过高上限路线", "有时为了保稳会拿太多功能相似的牌", "当全队都保守时可能缺少爆发点"],
-    advice: ["遇到明显能改变上限的稀有牌时，别总用稳把它拒掉", "压层成功时要敢于把一部分资源转成成长", "联机里别把所有脏活都默认分给自己"]
+    strengths: ["稳健得很少离谱暴毙", "很会补队友短板", "boss 前准备通常很完整"],
+    pitfalls: ["可能把明显的高上限路线也稳掉", "有时会拿太多功能相似的牌", "队里没人冲的时候容易一起变慢"],
+    advice: ["看到真能抬上限的牌别总拒绝", "你兜底的时候也给自己留输出口", "别把所有脏活都默认归你"]
   },
   "1000": {
-    name: "钢铁压层者",
-    hook: "你玩的不是花活，是一层层稳定推进到 boss 面前，然后用最朴素的硬度把它拿下。",
-    summary: "你偏好战斗路线、起防保血和高质量单卡，不迷信问号奇迹，也不依赖复杂连锁，是标准的稳定过塔派。",
+    name: "朴素过塔大师",
+    hook: "你会用最像正常人的方式把塔一层层过掉，然后把乐子人看得很急。",
+    summary: "你偏好压层、防哈、曲线和独立成型，不迷信奇迹，也不依赖复杂连锁，核心理念就是少失误。",
     signature: "压层 + 防哈 + 曲线 + 独核",
-    strengths: ["路线清晰，失误率低", "很会管理血量和休息点价值", "对精英和 boss 的保底表现好"],
-    pitfalls: ["可能缺少爆发和惊喜牌", "过于谨慎时会少打遗物节奏", "联机中容易显得过于强硬"],
-    advice: ["第二层开始主动找能拉开上限的遗物或稀有牌", "别把每一次掉血都当成失败，有时那是换节奏的成本", "如果队友明显更适合某个遗物，可以试着让一次"]
+    strengths: ["路线清晰，失误率低", "血量和篝火管理很扎实", "对精英和 boss 的保底表现好"],
+    pitfalls: ["上限可能被自己稳没了", "对高波动遗物和怪事接受度低", "联机里偶尔显得有点硬"],
+    advice: ["基础够稳时可以主动赌一次高收益节点", "掉一点血不等于犯罪", "偶尔让别人拿一次关键遗物，世界不会塌"]
   },
   "0111": {
-    name: "事件炼金师",
-    hook: "你擅长从问号、商店和奇怪遗物里拆出路线，然后在关键战斗里突然让全队一起爆掉。",
-    summary: "你不靠一路找怪堆战力，而是喜欢从事件收益、删牌、关键遗物和启动件里拼出爆发结构，联机时还愿意共享资源。",
+    name: "问号许愿池主理人",
+    hook: "你热爱事件、商店、宝箱和奇怪遗物，觉得地图上最香的从来不是普通怪。",
+    summary: "你擅长从问号和商店里拼收益，再把这些零碎资源变成全队爆发。你像在许愿池里运营一局牌。",
     signature: "探宝 + 攻哈 + 无限 + 团辅",
-    strengths: ["很会利用商店和事件改造牌库", "对诅咒收益和高波动遗物接受度高", "能把奇怪资源变成团队爆发"],
-    pitfalls: ["前期若战斗奖励不足，可能会火力虚", "容易为了事件价值走得太飘", "太相信拼图成功时会忽略血线"],
-    advice: ["探宝路线也要保证每层有足够战斗奖励支撑 boss", "拿诅咒收益前先确认删牌与净化手段", "团队资源分出去前，先确保自己还有基本启动速度"]
+    strengths: ["很会利用事件和商店", "敢拿高波动收益", "能把奇怪资源变成团队大节奏"],
+    pitfalls: ["前期战斗奖励不足时可能会发虚", "容易为了事件价值把路线走飘", "太相信拼图成功会忽略血线"],
+    advice: ["探宝也得保证每层有足够战斗强度", "拿诅咒收益前先想好怎么清理", "别把所有钱都花在整活上"]
   },
   "0110": {
-    name: "诅咒淘金客",
-    hook: "你会笑着点开问号，也会笑着拿走那件带副作用的离谱遗物，只要它能把你送上天。",
-    summary: "你是最典型的高波动单核玩家之一：爱事件、爱商店、爱拼无限，也敢把整个构筑压在少数关键件上。",
+    name: "诅咒收藏家",
+    hook: "你会笑着点开可疑事件，也会笑着捡起带副作用的离谱遗物。",
+    summary: "你是典型的高波动单核玩家，爱事件、爱商店、爱拼无限，也很敢把整个构筑压在少数关键件上。",
     signature: "探宝 + 攻哈 + 无限 + 独核",
-    strengths: ["很会在非战斗节点找高收益", "删牌、买件、找组合的方向极明确", "成型后往往很夸张"],
-    pitfalls: ["诅咒、状态牌和卡手会把你克得很痛", "容易在第一层战力还没起来时就贪过头", "联机里对资源和遗物的占有欲偏强"],
-    advice: ["每次接副作用前都想清楚谁来处理代价", "别把所有钱都留给梦想件，必要时先买保命", "单核路线越贪，越要让普通战的过关手段足够朴素"]
+    strengths: ["很能从问号里挖出离谱收益", "删牌、买件、做梦方向极明确", "一旦胡了就会非常夸张"],
+    pitfalls: ["诅咒和卡手会狠狠干你", "前期容易贪过头", "联机里会让队友提早开始护遗物"],
+    advice: ["每次接副作用前先想好谁付代价", "别把金币全留给梦想件", "这条路越贪，越需要朴素保底牌"]
   },
   "0101": {
-    name: "商店快攻师",
-    hook: "你最舒服的节奏，是靠商店修牌、靠问号找补强，再用干净利落的斩杀线把团队推过每个战点。",
-    summary: "你不执着无限，更重视删牌、找高质量单卡、拿顺手遗物，把一套节奏流畅的快攻或中速牌库修得很漂亮。",
+    name: "商店购物车战神",
+    hook: "你看见商店就像看见第二个家，删牌、买牌、修曲线才是你的快乐源泉。",
+    summary: "你偏爱探宝、攻哈和顺滑曲线，不执着无限，更擅长把一套快攻或中速牌库修得又薄又狠。",
     signature: "探宝 + 攻哈 + 曲线 + 团辅",
-    strengths: ["商店和路线规划能力强", "前中期战力落地快", "联机里擅长把资源分配得很实用"],
-    pitfalls: ["如果过度依赖商店，可能会错过精英遗物节奏", "后期遇到超长战可能成长不够", "偶尔会把太多金币花在优化而不是突破上"],
-    advice: ["商店路线的核心是修结构，不只是买贵卡", "快攻也要预留一点 boss 战成长", "当全队都很顺时，可以更敢打精英换遗物"]
+    strengths: ["商店规划很强", "前中期战力落地快", "联机里很会做实用分配"],
+    pitfalls: ["过于依赖商店可能错过精英节奏", "后期长战成长偶尔不够", "有时会把金币全花在小修小补上"],
+    advice: ["商店不是只买贵卡，删牌同样神", "快攻也要留一点 boss 战后手", "真顺的时候可以更敢打一只精英"]
   },
   "0100": {
-    name: "问号斩杀号",
-    hook: "你喜欢边逛边补、边补边杀，找到机会就用最直接的火力把战斗压短。",
-    summary: "你偏好靠事件和商店把牌库修薄、修顺，再用高质量输出和简洁费用曲线打出快速结算，是很纯粹的独立快攻派。",
+    name: "删牌快攻怪",
+    hook: "你边逛边修边砍，最享受的就是牌库越变越薄、怪物越死越快。",
+    summary: "你喜欢靠问号和商店把牌修干净，再用高质量输出来缩短战斗，是很纯粹的独立快攻派。",
     signature: "探宝 + 攻哈 + 曲线 + 独核",
-    strengths: ["节奏直接，拿牌很果断", "很擅长通过删牌和购物提高牌库质量", "对杂兵战和精英战有不错的前期表现"],
-    pitfalls: ["太少打精英时中后期遗物可能偏弱", "对副作用事件的抵抗力一般", "联机里容易默认自己优先拿最顺手的东西"],
-    advice: ["第一层探宝路线别完全躲精英，至少争取一到两件关键遗物", "快攻牌库也要留一条处理长战的后手", "如果队友更吃某件遗物，别总按自己顺手来分"]
+    strengths: ["节奏直接，拿牌果断", "删牌思路很清晰", "对杂兵战和精英战通常很早就有感觉"],
+    pitfalls: ["太少打精英时中后期遗物可能偏弱", "有些副作用事件会让你很难受", "联机里默认自己先顺手拿东西的概率偏高"],
+    advice: ["探宝路线别完全躲精英", "快攻牌库也要准备一点长战后手", "看见队友更吃的遗物时偶尔收手一次"]
   },
   "0011": {
-    name: "共享拼图师",
-    hook: "你会把问号、商店、删牌和团队卡都当成拼图块，慢慢拼出一台全队都能受益的机器。",
-    summary: "你重视结构整理、费用循环和团队容错，不急着抢伤害，而是偏爱通过探宝路线把构筑一点点修成高精度引擎。",
+    name: "全队拼图后勤",
+    hook: "你把问号、商店、删牌、团队卡和弃牌堆都看成拼图块。",
+    summary: "你重视结构整理、费用循环和团队容错，不急着抢伤害，而是喜欢把整队慢慢修到舒服区间。",
     signature: "探宝 + 防哈 + 无限 + 团辅",
-    strengths: ["很会从商店与事件里找关键拼图", "联机里资源分配意识很强", "后期成长和团队收益都不错"],
-    pitfalls: ["前期战斗输出可能不够硬", "太想把拼图拼完整时会拖慢节奏", "如果队友也偏慢，全队容易一起坐牢"],
-    advice: ["确保第一层至少有能稳定过精英的即时强度", "团辅不代表全让，关键启动件还是要拿", "当拼图已经够用时，优先补落地强度而不是继续贪完美"]
+    strengths: ["很会从零碎资源里拼出体系", "联机分配意识强", "后期成长和团队收益都不错"],
+    pitfalls: ["前期输出可能不够硬", "太想把拼图拼完整时会拖节奏", "如果队友也偏慢，全队会一起坐牢"],
+    advice: ["第一层至少要有能过精英的即时战力", "团辅不代表什么都让", "当拼图已经够用时优先补落地强度"]
   },
   "0010": {
-    name: "遗物拼图师",
-    hook: "你看到遗物、删牌和关键组件时就像看到藏宝图，愿意慢慢把整套牌库拧成最顺的样子。",
-    summary: "你偏爱探宝、防哈和引擎构筑，更看重单局后期的精密度与安全感，是典型的高完整度单核慢热玩家。",
+    name: "后期无敌你先别急",
+    hook: "你最常说的一句话，大概是“再给我一层，我真无敌了”。",
+    summary: "你偏爱探宝、防哈和引擎构筑，更看重牌库完整度和后期安全感，是标准的慢热型单核选手。",
     signature: "探宝 + 防哈 + 无限 + 独核",
-    strengths: ["牌库整理能力强", "长战处理和资源循环很成熟", "很能从看似零散的收益里攒出质变"],
-    pitfalls: ["容易在前两层慢热过头", "太吃关键遗物和删牌节点", "一旦路线被迫多打战斗，掉血可能超预期"],
-    advice: ["慢热构筑第一优先级永远是活到引擎成型", "别把每张功能牌都留着，精简本身就是强度", "商店和问号很香，但别忘了战斗奖励才会补基础数值"]
+    strengths: ["牌库整理能力强", "长战处理通常很成熟", "特别会从删牌和循环里攒质变"],
+    pitfalls: ["前两层慢热过头就会直接没后期", "太吃关键件和删牌点", "路线一旦被迫连续打架会掉血超预期"],
+    advice: ["先活到后期，你的理论上限才有意义", "精简本身就是强度，别什么都留", "问号和商店很香，但战斗奖励也得打"]
   },
   "0001": {
-    name: "稳图后勤官",
-    hook: "你是那种会先把全队血线、金币和后续 boss 准备都算进去的人，玩法非常像一名真正的后勤官。",
-    summary: "你偏好探宝、商店、删牌和健康血量，联机里愿意做让利与补位的人，不追求花哨，而追求全队都稳稳上塔。",
+    name: "联机老妈子",
+    hook: "你不是在爬塔，你是在一边爬塔一边照顾三个会乱跑的小孩。",
+    summary: "你偏好探宝、防哈、曲线和团辅，擅长管理血量、金币和后续准备，是联机里最像后勤部长的人。",
     signature: "探宝 + 防哈 + 曲线 + 团辅",
-    strengths: ["地图规划清楚", "资源和血线管理非常扎实", "联机里补位意识极强"],
-    pitfalls: ["可能把自己的成长放得太后", "队伍如果没人敢冲，你会显得有点保守", "容易承担太多分配和判断压力"],
-    advice: ["不是所有好东西都该让出去，先保住自己的关键节点", "当路线已经很安全时，可以主动争取一件改变上限的遗物", "后勤流最怕全程只保底，不给团队创造赢法"]
+    strengths: ["地图规划很清楚", "血线和资源管理扎实", "队友通常会觉得有你在真好"],
+    pitfalls: ["容易把自己的成长放到最后", "队伍没人敢冲时会显得过于保守", "常把别人的锅默默背了"],
+    advice: ["不是所有好东西都该让出去", "路线很安全时也要主动争一件抬上限的东西", "你可以兜底，但别替所有人过人生"]
   },
   "0000": {
-    name: "档案型塔学家",
-    hook: "你像会记住每层地图、每次删牌和每件遗物价值的人，靠纪律和结构把一把牌打得越来越稳。",
-    summary: "你是最典型的稳图、防哈、曲线、独核玩家：路线偏保守、拿牌讲质量、出牌讲费用效率，目标是把失误率压到最低。",
+    name: "塔学档案管理员",
+    hook: "你像把每一层地图、每次删牌和每件遗物价值都记在小本本上的人。",
+    summary: "你是最典型的稳图、防哈、曲线、独核玩家。你不靠奇迹吃饭，而是靠纪律、结构和少犯错。",
     signature: "探宝 + 防哈 + 曲线 + 独核",
-    strengths: ["稳定，几乎不会莫名崩盘", "对删牌、商店和血量管理很敏感", "很擅长把普通牌组修成扎实能过塔的样子"],
-    pitfalls: ["上限可能被自己保守掉", "对高波动稀有牌与奇遇收益接受度低", "联机里可能显得不够愿意让资源"],
-    advice: ["每层至少问自己一次，这把最值得赌的窗口在哪里", "稳图不是不打精英，而是挑能打赢的时机打", "当基础已经够稳时，允许一两张高波动牌进组抬天花板"]
+    strengths: ["稳定得几乎不会离谱崩盘", "对商店、删牌和血量特别敏感", "很会把普通牌组修成能过塔的样子"],
+    pitfalls: ["上限可能被自己稳掉", "对高波动乐子接受度不高", "联机里偶尔显得不够愿意让利"],
+    advice: ["每层至少问自己一次最值得赌的窗口在哪", "稳图不是不打精英，是挑能赢的时机打", "基础够稳时允许一两张离谱牌进组"]
   }
 };
 
@@ -322,6 +695,19 @@ const state = {
   currentIndex: 0,
   answers: Array(questions.length).fill(null)
 };
+
+const dimensionMaxScores = Object.fromEntries(
+  Object.keys(dimensions).map((key) => [key, 0])
+);
+
+questions.forEach((question) => {
+  Object.keys(dimensions).forEach((key) => {
+    const localMax = Math.max(
+      ...question.options.map((option) => Math.abs(option.effects[key] || 0))
+    );
+    dimensionMaxScores[key] += localMax;
+  });
+});
 
 const introPanel = document.getElementById("introPanel");
 const quizPanel = document.getElementById("quizPanel");
@@ -363,17 +749,18 @@ function renderQuestion() {
   progressFill.style.width = `${((state.currentIndex + 1) / questions.length) * 100}%`;
 
   choiceList.innerHTML = "";
-  options.forEach((option) => {
+  question.options.forEach((option, index) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "choice-btn";
-    if (currentAnswer === option.value) {
+
+    if (currentAnswer === index) {
       button.classList.add("selected");
     }
 
     button.innerHTML = `<strong>${option.label}</strong><span>${option.hint}</span>`;
     button.addEventListener("click", () => {
-      state.answers[state.currentIndex] = option.value;
+      state.answers[state.currentIndex] = index;
       renderQuestion();
     });
     choiceList.appendChild(button);
@@ -381,7 +768,7 @@ function renderQuestion() {
 
   prevBtn.disabled = state.currentIndex === 0;
   nextBtn.disabled = currentAnswer === null;
-  nextBtn.textContent = state.currentIndex === questions.length - 1 ? "查看结果" : "下一题";
+  nextBtn.textContent = state.currentIndex === questions.length - 1 ? "查看病历" : "下一题";
 }
 
 function goNext() {
@@ -416,8 +803,12 @@ function scoreQuiz() {
   };
 
   questions.forEach((question, index) => {
-    const answer = state.answers[index];
-    scores[question.dimension] += answer * question.direction;
+    const answerIndex = state.answers[index];
+    const selectedOption = question.options[answerIndex];
+
+    Object.entries(selectedOption.effects).forEach(([key, value]) => {
+      scores[key] += value;
+    });
   });
 
   return scores;
@@ -432,34 +823,33 @@ function buildArchetypeKey(scores) {
   ].join("");
 }
 
-function describeScore(score, meta) {
-  if (score > 2) {
-    return meta.summary.positive;
+function describeScore(score, meta, key) {
+  const max = dimensionMaxScores[key] || 1;
+  const ratio = Math.abs(score) / max;
+
+  if (ratio < 0.15) {
+    return meta.summary.neutral;
   }
 
-  if (score < -2) {
-    return meta.summary.negative;
-  }
-
-  return meta.summary.neutral;
+  return score >= 0 ? meta.summary.positive : meta.summary.negative;
 }
 
-function normalizeScore(score) {
-  const min = -12;
-  const max = 12;
-  return ((score - min) / (max - min)) * 100;
+function normalizeScore(score, key) {
+  const max = dimensionMaxScores[key] || 1;
+  return ((score + max) / (max * 2)) * 100;
 }
 
 function renderDimensionCard(key, score) {
   const meta = dimensions[key];
+  const max = dimensionMaxScores[key] || 1;
+  const ratio = Math.abs(score) / max;
   const strongSide = score >= 0 ? meta.right : meta.left;
-  const intensity = Math.abs(score);
-  let tone = "轻度倾向";
+  let tone = "轻微发作";
 
-  if (intensity >= 8) {
-    tone = "非常鲜明";
-  } else if (intensity >= 4) {
-    tone = "中度倾向";
+  if (ratio >= 0.66) {
+    tone = "重度发作";
+  } else if (ratio >= 0.33) {
+    tone = "中度发作";
   }
 
   const wrapper = document.createElement("article");
@@ -470,13 +860,13 @@ function renderDimensionCard(key, score) {
       <span class="dimension-score">${strongSide} · ${tone}</span>
     </div>
     <div class="dimension-bar">
-      <div class="dimension-marker" style="left: ${normalizeScore(score)}%;"></div>
+      <div class="dimension-marker" style="left: ${normalizeScore(score, key)}%;"></div>
     </div>
     <div class="dimension-poles">
       <span>${meta.left}</span>
       <span>${meta.right}</span>
     </div>
-    <p class="dimension-copy">${describeScore(score, meta)}</p>
+    <p class="dimension-copy">${describeScore(score, meta, key)}</p>
   `;
 
   return wrapper;
@@ -499,10 +889,10 @@ function buildCopyText(archetype, scores) {
   });
 
   return [
-    `我的杀戮尖塔2爬塔人格结果：${archetype.name}`,
+    `我的杀戮尖塔2怪人测试结果：${archetype.name}`,
     archetype.hook,
     `玩法定位：${archetype.summary}`,
-    `本次判定：${archetype.signature}`,
+    `病情标签：${archetype.signature}`,
     ...dimensionLines
   ].join("\n");
 }
@@ -552,6 +942,7 @@ function renderResult() {
 
   copyBtn.onclick = async () => {
     const text = buildCopyText(archetype, scores);
+
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
