@@ -1,3 +1,6 @@
+const SITE_URL = "https://barryzz-zz.github.io/";
+const REPO_URL = "https://github.com/BarryZz-zZ/BarryZz-zZ.github.io";
+
 const dimensions = {
   pathing: {
     label: "压层 / 探宝",
@@ -893,7 +896,10 @@ function buildCopyText(archetype, scores) {
     archetype.hook,
     `玩法定位：${archetype.summary}`,
     `病情标签：${archetype.signature}`,
-    ...dimensionLines
+    ...dimensionLines,
+    `在线测试：${SITE_URL}`,
+    `GitHub 仓库：${REPO_URL}`,
+    "玩完如果觉得有梗，欢迎去 GitHub 点个 Star。"
   ].join("\n");
 }
 
